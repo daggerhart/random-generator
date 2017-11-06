@@ -21,7 +21,7 @@ class RandomGenerator {
 		$plugin = new self();
 		$plugin->loadcmb2();
 
-		add_shortcode('random_token_generator', array( $plugin, 'shortcode' ));
+		add_shortcode('random_generator', array( $plugin, 'shortcode' ));
 
 		add_action( 'init', array( $plugin, 'register_post_type' ) );
 		add_action( 'cmb2_admin_init', array( $plugin, 'generator_metaboxes' ) );
@@ -186,5 +186,14 @@ class RandomGenerator {
 			'id'   => 'replacements',
 			'type' => 'textarea',
 		) );
+
+		$cmb->add_group_field( $group_field_id, array(
+			'name' => 'Details',
+			'id'   => 'details',
+			'type' => 'textarea',
+			'desc' => __('One per line. Additional adjectives prepended to the chosen replacement at random.'),
+		) );
 	}
 }
+
+
