@@ -62,19 +62,22 @@ class RandomGenerator {
 			foreach ($token_groups as $group) {
 				$token = '[' . trim($group['token'] ) . ']';
 				$replacements = explode("\n", $group['replacements']);
+				$details = explode("\n", $group['details']);
+
 				array_walk($replacements, 'trim');
+				array_walk($details, 'trim');
 
 				foreach ($replacements as $index => $item) {
 					$formatted = array(
-						'desc' => $item,
+						'text' => $item,
 						'no' => 1,
 						'die' => 1,
-						'details' => array(),
+						'details' => $details,
 					);
 
 					if (strpos($item, '::') !== FALSE) {
 						$temp = explode('::', $item);
-						$formatted['desc'] = $temp[1];
+						$formatted['text'] = $temp[1];
 
 						$dice = explode('d', $temp[0]);
 						$formatted['no'] = $dice[0];
@@ -178,6 +181,13 @@ class RandomGenerator {
 			'id'   => 'token',
 			'type' => 'text',
 			'desc' => __('Token without the braces.'),
+		) );
+
+		$cmb->add_group_field( $group_field_id, array(
+			'name' => 'Show number 1',
+			'id'   => 'show_ones',
+			'type' => 'checkbox',
+			'desc' => __('Check this if you want to show the number 1 when a replacement is only one item.'),
 		) );
 
 		$cmb->add_group_field( $group_field_id, array(

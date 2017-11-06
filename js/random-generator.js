@@ -38,37 +38,25 @@ var random_generator = random_generator || {};
     }
 
     /*
-     * @todo - implement item details?
      * Rolls an entity's dice and combines with entity description
      */
-    function getEntityResult( entity )  {
+    function getItemResult( item )  {
 
-        var result = entity.desc;
+        var result = item.text;
 
-        if ( entity.no && entity.die ) {
-            result = rollDice( entity.no, entity.die )  + " " + entity.desc;
-            result += getEntityDetails( entity );
+        if ( item.no && item.die ) {
+            var count = rollDice( item.no, item.die );
+
+            if (item.show_ones || count !== 1) {
+                result = count + ' ' + result;
+            }
+
+            if (item.details) {
+                result += " " + randomItem(item.details);
+            }
         }
 
         return result;
-    }
-
-    /*
-     * For retreiving heirarchical details for a top-level entity
-     */
-    function getEntityDetails( entity ) {
-
-        var output = "";
-
-        if ( entity.details ) {
-            $.each( entity.details, function( key, value ){
-
-                var item = randomItem( value );
-
-                output += " " + random_generator[key][item];
-            })
-        }
-        return output;
     }
 
     /*
@@ -79,7 +67,7 @@ var random_generator = random_generator || {};
 
         $.each( random_generator.token_groups, function( index, group ) {
             var item = randomItem( group.replacements );
-            var description = getEntityResult( item );
+            var description = getItemResult( item );
             output = output.replace( group.token, description);
         });
 
