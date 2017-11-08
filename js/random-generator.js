@@ -7,7 +7,7 @@ var random_generator = random_generator || {};
      * Returns a random integer between min (inclusive) and max (inclusive)
      * Using Math.round() will give you a non-uniform distribution!
      *
-     *http://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
+     * @link http://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
      *
      */
     function random( min, max ) {
@@ -32,9 +32,7 @@ var random_generator = random_generator || {};
      * Random entity chooses a random item from an array
      */
     function randomItem( items ) {
-        var item = items[ random( 0, items.length-1 ) ];
-
-        return item;
+        return items[ random( 0, items.length-1 ) ];
     }
 
     /*
@@ -42,16 +40,16 @@ var random_generator = random_generator || {};
      */
     function getItemResult( item )  {
 
-        var result = item.text;
+        var result = item.text.trim();
 
         if ( item.no && item.die ) {
-            var count = rollDice( item.no, item.die );
+            var count = rollDice(item.no, item.die);
 
-            if (item.show_ones || count !== 1) {
+            if ( item.show_ones || count !== 1 ) {
                 result = count + ' ' + result;
             }
 
-            if (item.details.length) {
+            if ( item.details.length ) {
                 result += " " + randomItem(item.details);
             }
         }
@@ -68,7 +66,9 @@ var random_generator = random_generator || {};
         $.each( random_generator.token_groups, function( index, group ) {
             var item = randomItem( group.replacements );
             var description = getItemResult( item );
-            output = output.replace( group.token, description);
+            while (output.indexOf(group.token) >= 0) {
+                output = output.replace( group.token, description );
+            }
         });
 
         $( "#random-generator-target" ).html( output );

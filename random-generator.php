@@ -62,7 +62,8 @@ class RandomGenerator {
 			foreach ($token_groups as $group) {
 				$token = '[' . trim($group['token'] ) . ']';
 				$replacements = explode("\n", $group['replacements']);
-				$details = explode("\n", $group['details']);
+				$show_ones = !empty($group['show_ones']) ? true : false;
+				$details = !empty($group['details']) ? explode("\n", $group['details']) : [];
 
 				array_walk($replacements, 'trim');
 				array_walk($details, 'trim');
@@ -73,6 +74,7 @@ class RandomGenerator {
 						'no' => 1,
 						'die' => 1,
 						'details' => $details,
+						'show_ones' => $show_ones,
 					);
 
 					if (strpos($item, '::') !== FALSE) {
@@ -184,13 +186,6 @@ class RandomGenerator {
 		) );
 
 		$cmb->add_group_field( $group_field_id, array(
-			'name' => 'Show number 1',
-			'id'   => 'show_ones',
-			'type' => 'checkbox',
-			'desc' => __('Check this if you want to show the number 1 when a replacement is only one item.'),
-		) );
-
-		$cmb->add_group_field( $group_field_id, array(
 			'name' => 'Possible Replacements',
 			'description' => 'One per line. Prepend dice to a row like this- 2d6::forest wardens',
 			'id'   => 'replacements',
@@ -198,9 +193,17 @@ class RandomGenerator {
 		) );
 
 		$cmb->add_group_field( $group_field_id, array(
+			'name' => 'Show number 1',
+			'id'   => 'show_ones',
+			'type' => 'checkbox',
+			'desc' => __('Check this if you want to show the number 1 when a replacement is only one item.'),
+		) );
+
+
+		$cmb->add_group_field( $group_field_id, array(
 			'name' => 'Details',
 			'id'   => 'details',
-			'type' => 'textarea',
+			'type' => 'textarea_small',
 			'desc' => __('One per line. Additional adjectives prepended to the chosen replacement at random.'),
 		) );
 	}
