@@ -51,7 +51,7 @@ var random_generator = random_generator || {};
                 result = count + ' ' + result;
             }
 
-            if (item.details) {
+            if (item.details.length) {
                 result += " " + randomItem(item.details);
             }
         }
