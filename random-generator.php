@@ -65,8 +65,8 @@ class RandomGenerator {
 				$show_ones = !empty($group['show_ones']) ? true : false;
 				$details = !empty($group['details']) ? explode("\n", $group['details']) : [];
 
-				array_walk($replacements, 'trim');
-				array_walk($details, 'trim');
+				$replacements = array_map('trim', $replacements);
+				$details = array_map('trim', $details);
 
 				foreach ($replacements as $index => $item) {
 					$formatted = array(
